@@ -21,7 +21,7 @@ namespace Labb2_Linq.Controllers
         // GET: Teachers
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Teacher.ToListAsync());
+            return View(await _context.Teacher.Include(c => c.Courses).ToListAsync());
         }
 
         // GET: Teachers/Details/5
@@ -45,6 +45,7 @@ namespace Labb2_Linq.Controllers
         // GET: Teachers/Create
         public IActionResult Create()
         {
+            ViewBag.Courses = new SelectList(_context.Course, "Id", "Name");
             return View();
         }
 
@@ -53,11 +54,25 @@ namespace Labb2_Linq.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName")] Teacher teacher)
+        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName")] Teacher teacher, int[] selectedCourses)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(teacher);
+
+                if (selectedCourses != null)
+                {
+                    foreach(int courseId in selectedCourses)
+                    {
+                        var course = _context.Course.Find(courseId);
+                        if(course != null)
+                        {
+                            teacher.Courses.Add(course);
+                            
+                        }
+                    }
+                }
+
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
