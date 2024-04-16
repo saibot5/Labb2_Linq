@@ -23,6 +23,15 @@ namespace Labb2_Linq.Controllers
         {
             return View(await _context.Teacher.Include(c => c.Courses).ToListAsync());
         }
+        public async Task<IActionResult> Programmering()
+        {
+            var query = from t in _context.Teacher
+                        where t.Courses.Any(c => c.Name == "programmering 1")
+                        select t;
+
+            return View(await query.Include(c => c.Courses).ToListAsync());
+        }
+
 
         // GET: Teachers/Details/5
         public async Task<IActionResult> Details(int? id)

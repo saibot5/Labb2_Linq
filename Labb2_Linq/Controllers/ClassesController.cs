@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Labb2_Linq.Models;
+using NuGet.DependencyResolver;
 
 namespace Labb2_Linq.Controllers
 {
@@ -21,7 +22,7 @@ namespace Labb2_Linq.Controllers
         // GET: Classes
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Class.ToListAsync());
+            return View(await _context.Class.Include(c => c.Courses).ToListAsync());
         }
 
         // GET: Classes/Details/5
@@ -45,6 +46,7 @@ namespace Labb2_Linq.Controllers
         // GET: Classes/Create
         public IActionResult Create()
         {
+            ViewBag.Courses = new SelectList(_context.Course, "Id", "Name");
             return View();
         }
 
@@ -53,11 +55,26 @@ namespace Labb2_Linq.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ClassId,Name")] Class @class)
+        public async Task<IActionResult> Create([Bind("ClassId,Name")] Class @class, int[] selectedCourses)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(@class);
+
+
+                if (selectedCourses != null)
+                {
+                    foreach (int courseId in selectedCourses)
+                    {
+                        var course = _context.Course.Find(courseId);
+                        if (course != null)
+                        {
+                            @class.Courses.Add(course);
+
+                        }
+                    }
+                }
+
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
