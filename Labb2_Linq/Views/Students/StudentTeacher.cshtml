@@ -1,0 +1,24 @@
+﻿@model List<StudentTeacherViewModel>
+
+<h1>Students with Their Teachers</h1>
+
+<table>
+    <tr>
+        <th>Student Name</th>
+        <th>Teachers</th>
+    </tr>
+    @foreach (var studentTeacher in Model)
+    {
+        <tr>
+            <td>@studentTeacher.Student.FirstName @studentTeacher.Student.LastName</td>
+            <td>
+                <ul>
+                    @foreach (var teacher in studentTeacher.Teachers)
+                    {
+                        <li>@teacher.FirstName @teacher.LastName</li>
+                    }
+                </ul>
+            </td>
+        </tr>
+    }
+</table>

@@ -14,7 +14,7 @@ using Labb2_Linq.Models;
 
         public DbSet<Labb2_Linq.Models.Course> Course { get; set; } = default!;
 
-public DbSet<Labb2_Linq.Models.Class> Class { get; set; } = default!;
+public DbSet<Labb2_Linq.Models.Klass> Klass { get; set; } = default!;
 
 public DbSet<Labb2_Linq.Models.Student> Student { get; set; } = default!;
 

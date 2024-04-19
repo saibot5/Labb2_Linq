@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -9,9 +10,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Labb2_Linq.Migrations
 {
     [DbContext(typeof(Labb2Context))]
-    partial class Labb2ContextModelSnapshot : ModelSnapshot
+    [Migration("20240419073944_4tables")]
+    partial class _4tables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -32,7 +35,7 @@ namespace Labb2_Linq.Migrations
 
                     b.HasIndex("CoursesId");
 
-                    b.ToTable("CourseKlass", (string)null);
+                    b.ToTable("CourseKlass");
                 });
 
             modelBuilder.Entity("CourseTeacher", b =>
@@ -47,7 +50,7 @@ namespace Labb2_Linq.Migrations
 
                     b.HasIndex("TeachersId");
 
-                    b.ToTable("CourseTeacher", (string)null);
+                    b.ToTable("CourseTeacher");
                 });
 
             modelBuilder.Entity("Labb2_Linq.Models.Course", b =>
@@ -64,7 +67,7 @@ namespace Labb2_Linq.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Course", (string)null);
+                    b.ToTable("Course");
                 });
 
             modelBuilder.Entity("Labb2_Linq.Models.Klass", b =>
@@ -81,7 +84,7 @@ namespace Labb2_Linq.Migrations
 
                     b.HasKey("KlassId");
 
-                    b.ToTable("Klass", (string)null);
+                    b.ToTable("Class");
                 });
 
             modelBuilder.Entity("Labb2_Linq.Models.Student", b =>
@@ -91,6 +94,9 @@ namespace Labb2_Linq.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StudentId"));
+
+                    b.Property<int>("ClassId")
+                        .HasColumnType("int");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -107,7 +113,7 @@ namespace Labb2_Linq.Migrations
 
                     b.HasIndex("KlassId");
 
-                    b.ToTable("Student", (string)null);
+                    b.ToTable("Student");
                 });
 
             modelBuilder.Entity("Labb2_Linq.Models.Teacher", b =>
@@ -128,7 +134,7 @@ namespace Labb2_Linq.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Teacher", (string)null);
+                    b.ToTable("Teacher");
                 });
 
             modelBuilder.Entity("CourseKlass", b =>

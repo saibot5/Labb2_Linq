@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Labb2_Linq.Migrations
 {
     [DbContext(typeof(Labb2Context))]
-    [Migration("20240416093001_4tables")]
-    partial class _4tables
+    [Migration("20240419085657_viewmodel")]
+    partial class viewmodel
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,19 +23,19 @@ namespace Labb2_Linq.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("ClassCourse", b =>
+            modelBuilder.Entity("CourseKlass", b =>
                 {
-                    b.Property<int>("ClassesClassId")
+                    b.Property<int>("ClassesKlassId")
                         .HasColumnType("int");
 
                     b.Property<int>("CoursesId")
                         .HasColumnType("int");
 
-                    b.HasKey("ClassesClassId", "CoursesId");
+                    b.HasKey("ClassesKlassId", "CoursesId");
 
                     b.HasIndex("CoursesId");
 
-                    b.ToTable("ClassCourse");
+                    b.ToTable("CourseKlass");
                 });
 
             modelBuilder.Entity("CourseTeacher", b =>
@@ -51,23 +51,6 @@ namespace Labb2_Linq.Migrations
                     b.HasIndex("TeachersId");
 
                     b.ToTable("CourseTeacher");
-                });
-
-            modelBuilder.Entity("Labb2_Linq.Models.Class", b =>
-                {
-                    b.Property<int>("ClassId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ClassId"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ClassId");
-
-                    b.ToTable("Class");
                 });
 
             modelBuilder.Entity("Labb2_Linq.Models.Course", b =>
@@ -87,6 +70,23 @@ namespace Labb2_Linq.Migrations
                     b.ToTable("Course");
                 });
 
+            modelBuilder.Entity("Labb2_Linq.Models.Klass", b =>
+                {
+                    b.Property<int>("KlassId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("KlassId"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("KlassId");
+
+                    b.ToTable("Klass");
+                });
+
             modelBuilder.Entity("Labb2_Linq.Models.Student", b =>
                 {
                     b.Property<int>("StudentId")
@@ -95,12 +95,12 @@ namespace Labb2_Linq.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StudentId"));
 
-                    b.Property<int>("ClassId")
-                        .HasColumnType("int");
-
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("KlassId")
+                        .HasColumnType("int");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -108,7 +108,7 @@ namespace Labb2_Linq.Migrations
 
                     b.HasKey("StudentId");
 
-                    b.HasIndex("ClassId");
+                    b.HasIndex("KlassId");
 
                     b.ToTable("Student");
                 });
@@ -134,11 +134,11 @@ namespace Labb2_Linq.Migrations
                     b.ToTable("Teacher");
                 });
 
-            modelBuilder.Entity("ClassCourse", b =>
+            modelBuilder.Entity("CourseKlass", b =>
                 {
-                    b.HasOne("Labb2_Linq.Models.Class", null)
+                    b.HasOne("Labb2_Linq.Models.Klass", null)
                         .WithMany()
-                        .HasForeignKey("ClassesClassId")
+                        .HasForeignKey("ClassesKlassId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -166,16 +166,16 @@ namespace Labb2_Linq.Migrations
 
             modelBuilder.Entity("Labb2_Linq.Models.Student", b =>
                 {
-                    b.HasOne("Labb2_Linq.Models.Class", "Class")
+                    b.HasOne("Labb2_Linq.Models.Klass", "Klass")
                         .WithMany("Students")
-                        .HasForeignKey("ClassId")
+                        .HasForeignKey("KlassId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Class");
+                    b.Navigation("Klass");
                 });
 
-            modelBuilder.Entity("Labb2_Linq.Models.Class", b =>
+            modelBuilder.Entity("Labb2_Linq.Models.Klass", b =>
                 {
                     b.Navigation("Students");
                 });

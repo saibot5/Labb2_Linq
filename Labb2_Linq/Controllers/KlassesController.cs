@@ -10,22 +10,22 @@ using NuGet.DependencyResolver;
 
 namespace Labb2_Linq.Controllers
 {
-    public class ClassesController : Controller
+    public class KlassesController : Controller
     {
         private readonly Labb2Context _context;
 
-        public ClassesController(Labb2Context context)
+        public KlassesController(Labb2Context context)
         {
             _context = context;
         }
 
-        // GET: Classes
+        // GET: Klasses
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Class.Include(c => c.Courses).ToListAsync());
+            return View(await _context.Klass.ToListAsync());
         }
 
-        // GET: Classes/Details/5
+        // GET: Klasses/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,34 +33,33 @@ namespace Labb2_Linq.Controllers
                 return NotFound();
             }
 
-            var @class = await _context.Class
-                .FirstOrDefaultAsync(m => m.ClassId == id);
-            if (@class == null)
+            var klass = await _context.Klass
+                .FirstOrDefaultAsync(m => m.KlassId == id);
+            if (klass == null)
             {
                 return NotFound();
             }
 
-            return View(@class);
+            return View(klass);
         }
 
-        // GET: Classes/Create
+        // GET: Klasses/Create
         public IActionResult Create()
         {
             ViewBag.Courses = new SelectList(_context.Course, "Id", "Name");
             return View();
         }
 
-        // POST: Classes/Create
+        // POST: Klasses/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ClassId,Name")] Class @class, int[] selectedCourses)
+        public async Task<IActionResult> Create([Bind("KlassId,Name")] Klass klass, int[] selectedCourses)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(@class);
-
+                _context.Add(klass);
 
                 if (selectedCourses != null)
                 {
@@ -69,7 +68,7 @@ namespace Labb2_Linq.Controllers
                         var course = _context.Course.Find(courseId);
                         if (course != null)
                         {
-                            @class.Courses.Add(course);
+                            klass.Courses.Add(course);
 
                         }
                     }
@@ -78,10 +77,10 @@ namespace Labb2_Linq.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(@class);
+            return View(klass);
         }
 
-        // GET: Classes/Edit/5
+        // GET: Klasses/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -89,22 +88,22 @@ namespace Labb2_Linq.Controllers
                 return NotFound();
             }
 
-            var @class = await _context.Class.FindAsync(id);
-            if (@class == null)
+            var klass = await _context.Klass.FindAsync(id);
+            if (klass == null)
             {
                 return NotFound();
             }
-            return View(@class);
+            return View(klass);
         }
 
-        // POST: Classes/Edit/5
+        // POST: Klasses/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ClassId,Name")] Class @class)
+        public async Task<IActionResult> Edit(int id, [Bind("KlassId,Name")] Klass klass)
         {
-            if (id != @class.ClassId)
+            if (id != klass.KlassId)
             {
                 return NotFound();
             }
@@ -113,12 +112,12 @@ namespace Labb2_Linq.Controllers
             {
                 try
                 {
-                    _context.Update(@class);
+                    _context.Update(klass);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ClassExists(@class.ClassId))
+                    if (!KlassExists(klass.KlassId))
                     {
                         return NotFound();
                     }
@@ -129,10 +128,10 @@ namespace Labb2_Linq.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(@class);
+            return View(klass);
         }
 
-        // GET: Classes/Delete/5
+        // GET: Klasses/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -140,34 +139,34 @@ namespace Labb2_Linq.Controllers
                 return NotFound();
             }
 
-            var @class = await _context.Class
-                .FirstOrDefaultAsync(m => m.ClassId == id);
-            if (@class == null)
+            var klass = await _context.Klass
+                .FirstOrDefaultAsync(m => m.KlassId == id);
+            if (klass == null)
             {
                 return NotFound();
             }
 
-            return View(@class);
+            return View(klass);
         }
 
-        // POST: Classes/Delete/5
+        // POST: Klasses/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var @class = await _context.Class.FindAsync(id);
-            if (@class != null)
+            var klass = await _context.Klass.FindAsync(id);
+            if (klass != null)
             {
-                _context.Class.Remove(@class);
+                _context.Klass.Remove(klass);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ClassExists(int id)
+        private bool KlassExists(int id)
         {
-            return _context.Class.Any(e => e.ClassId == id);
+            return _context.Klass.Any(e => e.KlassId == id);
         }
     }
 }

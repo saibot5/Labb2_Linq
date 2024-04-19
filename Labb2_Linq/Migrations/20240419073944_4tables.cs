@@ -14,13 +14,13 @@ namespace Labb2_Linq.Migrations
                 name: "Class",
                 columns: table => new
                 {
-                    ClassId = table.Column<int>(type: "int", nullable: false)
+                    KlassId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Class", x => x.ClassId);
+                    table.PrimaryKey("PK_Class", x => x.KlassId);
                 });
 
             migrationBuilder.CreateTable(
@@ -58,37 +58,38 @@ namespace Labb2_Linq.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ClassId = table.Column<int>(type: "int", nullable: false)
+                    ClassId = table.Column<int>(type: "int", nullable: false),
+                    KlassId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Student", x => x.StudentId);
                     table.ForeignKey(
-                        name: "FK_Student_Class_ClassId",
-                        column: x => x.ClassId,
+                        name: "FK_Student_Class_KlassId",
+                        column: x => x.KlassId,
                         principalTable: "Class",
-                        principalColumn: "ClassId",
+                        principalColumn: "KlassId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "ClassCourse",
+                name: "CourseKlass",
                 columns: table => new
                 {
-                    ClassesClassId = table.Column<int>(type: "int", nullable: false),
+                    ClassesKlassId = table.Column<int>(type: "int", nullable: false),
                     CoursesId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ClassCourse", x => new { x.ClassesClassId, x.CoursesId });
+                    table.PrimaryKey("PK_CourseKlass", x => new { x.ClassesKlassId, x.CoursesId });
                     table.ForeignKey(
-                        name: "FK_ClassCourse_Class_ClassesClassId",
-                        column: x => x.ClassesClassId,
+                        name: "FK_CourseKlass_Class_ClassesKlassId",
+                        column: x => x.ClassesKlassId,
                         principalTable: "Class",
-                        principalColumn: "ClassId",
+                        principalColumn: "KlassId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ClassCourse_Course_CoursesId",
+                        name: "FK_CourseKlass_Course_CoursesId",
                         column: x => x.CoursesId,
                         principalTable: "Course",
                         principalColumn: "Id",
@@ -120,8 +121,8 @@ namespace Labb2_Linq.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClassCourse_CoursesId",
-                table: "ClassCourse",
+                name: "IX_CourseKlass_CoursesId",
+                table: "CourseKlass",
                 column: "CoursesId");
 
             migrationBuilder.CreateIndex(
@@ -130,16 +131,16 @@ namespace Labb2_Linq.Migrations
                 column: "TeachersId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Student_ClassId",
+                name: "IX_Student_KlassId",
                 table: "Student",
-                column: "ClassId");
+                column: "KlassId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ClassCourse");
+                name: "CourseKlass");
 
             migrationBuilder.DropTable(
                 name: "CourseTeacher");

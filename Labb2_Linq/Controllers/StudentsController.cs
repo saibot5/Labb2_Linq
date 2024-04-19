@@ -18,10 +18,41 @@ namespace Labb2_Linq.Controllers
             _context = context;
         }
 
-        // GET: Students
         public async Task<IActionResult> Index()
         {
+          
             return View(await _context.Student.ToListAsync());
+        }
+
+        // GET: Students
+        public async Task<IActionResult> StudentTeacher()
+        {
+            var studentTeachers =  _context.Student
+            .Select(student => new StudentTeacherViewModel
+            {
+                Student = student,
+                Teachers = student.Klass.Courses.SelectMany(course => course.Teachers)
+            }).ToList();
+
+
+
+            return View(studentTeachers);
+        }
+
+        public async Task<IActionResult> ProgStudentTeacher()
+        {
+            var studentTeachers = _context.Student.Where(student=> student.Klass.Courses.Any(c => c.Name == "Programmering 1"))
+           .Select(student => new StudentTeacherViewModel
+           {
+               Student = student,
+               Teachers = student.Klass.Courses.Where(course => course.Name == "Programmering 1").SelectMany(course => course.Teachers)
+           }).ToList();
+
+
+
+
+
+            return View(studentTeachers);
         }
 
         // GET: Students/Details/5
@@ -45,6 +76,7 @@ namespace Labb2_Linq.Controllers
         // GET: Students/Create
         public IActionResult Create()
         {
+            ViewBag.Klasses = new SelectList(_context.Klass, "KlassId", "Name");
             return View();
         }
 
@@ -53,7 +85,7 @@ namespace Labb2_Linq.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("StudentId,FirstName,LastName,ClassId")] Student student)
+        public async Task<IActionResult> Create([Bind("StudentId,FirstName,LastName,KlassId")] Student student)
         {
             if (ModelState.IsValid)
             {
