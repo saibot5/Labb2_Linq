@@ -24,6 +24,24 @@ namespace Labb2_Linq.Controllers
             return View(await _context.Course.ToListAsync());
         }
 
+
+        public async Task<IActionResult> ProgToOop()
+        {
+            var course = await _context.Course.Where(c => c.Name == "Programmering 2").FirstOrDefaultAsync();
+
+            return View(course);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ProgToOop(Course course)
+        {
+            course.Name = "OOP";
+            _context.Update(course);  
+            _context.SaveChanges();
+
+            return RedirectToAction(nameof(Index));
+        }
+
         // GET: Courses/Details/5
         public async Task<IActionResult> Details(int? id)
         {
