@@ -3,6 +3,6 @@
     public class StudentTeacherViewModel
     {
         public Student Student { get; set; }
-        public IEnumerable<Teacher> Teachers { get; set; }
+        public virtual IEnumerable<Teacher> Teachers { get; set; }
     }
 }

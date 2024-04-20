@@ -33,6 +33,35 @@ namespace Labb2_Linq.Controllers
         }
 
 
+
+        public async Task<IActionResult> ReiToTob()
+        {
+            //hitta om reidar är lärare i programmering 1
+            var teacher = await _context.Teacher.Where(t => t.FirstName == "Reidar").Where(t => t.Courses.Any(c => c.Name == "Programmering 1")).FirstOrDefaultAsync();
+            return View(teacher);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ReiToTob(Teacher teacher)
+        {
+            //hämta reidar igen annars skapas en till reidar (hittar inte varför) och ta bort kursen "Programmering 1"
+            teacher = await _context.Teacher.Where(t => t.FirstName == "Reidar").Include(c => c.Courses).FirstOrDefaultAsync();
+            var course = await _context.Course.Where(c => c.Name == "Programmering 1").FirstOrDefaultAsync();
+            teacher.Courses.Remove(course);
+            _context.Update(teacher);
+
+            //hämta tobias och lägg till Programmering 1
+            Teacher teacher1 = await _context.Teacher.Where(t => t.FirstName == "Tobias").FirstOrDefaultAsync();
+            teacher1.Courses.Add(course);
+            _context.Update(teacher1);
+
+            _context.SaveChanges();
+
+            return RedirectToAction(nameof(Index));
+        }
+
+
+
         // GET: Teachers/Details/5
         public async Task<IActionResult> Details(int? id)
         {

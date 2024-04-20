@@ -24,7 +24,7 @@ namespace Labb2_Linq.Controllers
             return View(await _context.Course.ToListAsync());
         }
 
-
+       
         public async Task<IActionResult> ProgToOop()
         {
             var course = await _context.Course.Where(c => c.Name == "Programmering 2").FirstOrDefaultAsync();

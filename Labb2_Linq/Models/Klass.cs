@@ -4,7 +4,7 @@
     {
         public int KlassId { get; set; }
         public string Name { get; set; }
-        public ICollection<Student> Students { get; set; } = new List<Student>();
-        public ICollection<Course> Courses { get; set; } = new List<Course>();
+        public virtual ICollection<Student> Students { get; set; } = new List<Student>();
+        public virtual ICollection<Course> Courses { get; set; } = new List<Course>();
     }
 }

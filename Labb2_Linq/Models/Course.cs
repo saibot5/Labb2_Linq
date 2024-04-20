@@ -4,7 +4,7 @@
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public ICollection<Klass>? Classes { get; set; } = new List<Klass>();
-        public ICollection<Teacher>? Teachers { get; set; } =new List<Teacher>();
+        public virtual ICollection<Klass>? Classes { get; set; } = new List<Klass>();
+        public virtual ICollection<Teacher>? Teachers { get; set; } =new List<Teacher>();
     }
 }
