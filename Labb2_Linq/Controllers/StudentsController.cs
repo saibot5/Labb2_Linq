@@ -27,6 +27,7 @@ namespace Labb2_Linq.Controllers
         // GET: Students
         public async Task<IActionResult> StudentTeacher()
         {
+            //hämtar alla elever och lärare dom har
             var studentTeachers =  _context.Student
             .Select(student => new StudentTeacherViewModel
             {
@@ -41,6 +42,7 @@ namespace Labb2_Linq.Controllers
 
         public async Task<IActionResult> ProgStudentTeacher()
         {
+            //hämtar alla elever i Programmering 1 och deras lärare
             var studentTeachers = _context.Student.Where(student=> student.Klass.Courses.Any(c => c.Name == "Programmering 1"))
            .Select(student => new StudentTeacherViewModel
            {

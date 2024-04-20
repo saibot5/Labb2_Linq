@@ -27,6 +27,7 @@ namespace Labb2_Linq.Controllers
        
         public async Task<IActionResult> ProgToOop()
         {
+            //hämtar kursen Programmering 2
             var course = await _context.Course.Where(c => c.Name == "Programmering 2").FirstOrDefaultAsync();
 
             return View(course);
@@ -35,6 +36,7 @@ namespace Labb2_Linq.Controllers
         [HttpPost]
         public async Task<IActionResult> ProgToOop(Course course)
         {
+            //byter namn på Programmering 2 till OOP
             course.Name = "OOP";
             _context.Update(course);  
             _context.SaveChanges();

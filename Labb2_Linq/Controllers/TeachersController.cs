@@ -25,6 +25,7 @@ namespace Labb2_Linq.Controllers
         }
         public async Task<IActionResult> Programmering()
         {
+            //hämta alla lärare i programmering
             var query = from t in _context.Teacher
                         where t.Courses.Any(c => c.Name == "programmering 1")
                         select t;
