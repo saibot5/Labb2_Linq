@@ -72,7 +72,7 @@ namespace Labb2_Linq.Controllers
             }
 
             var teacher = await _context.Teacher
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.TeacherId == id);
             if (teacher == null)
             {
                 return NotFound();
@@ -141,7 +141,7 @@ namespace Labb2_Linq.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName")] Teacher teacher)
         {
-            if (id != teacher.Id)
+            if (id != teacher.TeacherId)
             {
                 return NotFound();
             }
@@ -155,7 +155,7 @@ namespace Labb2_Linq.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TeacherExists(teacher.Id))
+                    if (!TeacherExists(teacher.TeacherId))
                     {
                         return NotFound();
                     }
@@ -178,7 +178,7 @@ namespace Labb2_Linq.Controllers
             }
 
             var teacher = await _context.Teacher
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.TeacherId == id);
             if (teacher == null)
             {
                 return NotFound();
@@ -204,7 +204,7 @@ namespace Labb2_Linq.Controllers
 
         private bool TeacherExists(int id)
         {
-            return _context.Teacher.Any(e => e.Id == id);
+            return _context.Teacher.Any(e => e.TeacherId == id);
         }
     }
 }

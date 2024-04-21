@@ -53,7 +53,7 @@ namespace Labb2_Linq.Controllers
             }
 
             var course = await _context.Course
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.CourseId == id);
             if (course == null)
             {
                 return NotFound();
@@ -107,7 +107,7 @@ namespace Labb2_Linq.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Course course)
         {
-            if (id != course.Id)
+            if (id != course.CourseId)
             {
                 return NotFound();
             }
@@ -121,7 +121,7 @@ namespace Labb2_Linq.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CourseExists(course.Id))
+                    if (!CourseExists(course.CourseId))
                     {
                         return NotFound();
                     }
@@ -144,7 +144,7 @@ namespace Labb2_Linq.Controllers
             }
 
             var course = await _context.Course
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.CourseId == id);
             if (course == null)
             {
                 return NotFound();
@@ -170,7 +170,7 @@ namespace Labb2_Linq.Controllers
 
         private bool CourseExists(int id)
         {
-            return _context.Course.Any(e => e.Id == id);
+            return _context.Course.Any(e => e.CourseId == id);
         }
     }
 }
